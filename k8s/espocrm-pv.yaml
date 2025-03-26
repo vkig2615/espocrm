@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: espocrm-db-secret
+type: Opaque
+data:
+  MYSQL_ROOT_PASSWORD: cGFzc3dvcmQ=  # Base64 encoded (password)
+  MYSQL_DATABASE: ZXNwb2NybQ==       # Base64 encoded (espocrm)
+  MYSQL_USER: ZXNwb3VzZXI=           # Base64 encoded (espouser)
+  MYSQL_PASSWORD: cGFzc3dvcmQ=        # Base64 encoded (password)

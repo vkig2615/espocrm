@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: espocrm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: espocrm
+  template:
+    metadata:
+      labels:
+        app: espocrm
+    spec:
+      containers:
+      - name: espocrm
+        image: espocrm/espocrm:latest
+        env:
+        - name: MYSQL_HOST
+          value: "mariadb"
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: espocrm-db-secret
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: espocrm-db-secret
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: espocrm-db-secret
+              key: MYSQL_PASSWORD
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: espocrm-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: espocrm-storage
+        persistentVolumeClaim:
+          claimName: espocrm-pvc
